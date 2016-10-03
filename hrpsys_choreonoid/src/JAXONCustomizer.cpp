@@ -61,6 +61,7 @@ struct JAXONCustomizer
 
   bool hasVirtualBushJoints;
   JointValSet jointValSets[2][3];
+  JointValSet racketValSets;
   double springT;
   double dampingT;
   double springR;
@@ -69,6 +70,7 @@ struct JAXONCustomizer
   //* *//
   bool hasMultisenseJoint;
   JointValSet multisense_joint;
+  double racket_springT, racket_dampingT;
 };
 
 
@@ -122,6 +124,12 @@ static void getVirtualbushJoints(JAXONCustomizer* customizer, BodyHandle body)
       jointValSet.velocityPtr = bodyInterface->getJointVelocityPtr(body, bindex);
       jointValSet.torqueForcePtr = bodyInterface->getJointForcePtr(body, bindex);
     }
+    //racket
+    JointValSet& jointValSet = customizer->racketValSets;
+    int TennisSliderIndex=bodyInterface->getLinkIndexFromName(body, "RACKET_M_JOINT0");
+    jointValSet.valuePtr = bodyInterface->getJointValuePtr(body, TennisSliderIndex);
+    jointValSet.velocityPtr = bodyInterface->getJointVelocityPtr(body, TennisSliderIndex);
+    jointValSet.torqueForcePtr = bodyInterface->getJointForcePtr(body, TennisSliderIndex);
   }
 }
 
@@ -139,6 +147,8 @@ static BodyCustomizerHandle create(BodyHandle bodyHandle, const char* modelName)
   customizer->dampingT = 1.1e3; // N/(m/s)
   customizer->springR  = 2.5e3; // Nm / rad
   customizer->dampingR = 2.5;   // Nm / (rad/s)
+  customizer->racket_springT  = 100; // N/m
+  customizer->racket_dampingT = 1; // N/(m/s)
 
   getVirtualbushJoints(customizer, bodyHandle);
 
@@ -169,6 +179,10 @@ static void setVirtualJointForces(BodyCustomizerHandle customizerHandle)
         *(rot.torqueForcePtr) = - customizer->springR * (*rot.valuePtr) - customizer->dampingR * (*rot.velocityPtr);
         //std::cerr << i << " " << j << " " << *(rot.torqueForcePtr) << " = " << -customizer->springR << " x " << *rot.valuePtr << " + " <<  - customizer->dampingR << " x " << *rot.velocityPtr << std::endl;
       }
+    }
+    { // racket
+      JointValSet& trans = customizer->racketValSets;
+      *(trans.torqueForcePtr) = - customizer->racket_springT * (*trans.valuePtr) - customizer->racket_dampingT * (*trans.velocityPtr);
     }
   }
 
