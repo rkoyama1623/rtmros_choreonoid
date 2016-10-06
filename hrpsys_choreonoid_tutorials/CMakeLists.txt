@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(hrpsys_choreonoid_tutorials)
 
 find_package(catkin REQUIRED COMPONENTS hrpsys_ros_bridge euscollada rostest rospy
-  euslisp xacro control_msgs roseus hrpsys_ros_bridge_tutorials jsk_models jvrc_models hrpsys_choreonoid)
+  euslisp xacro control_msgs roseus hrpsys_ros_bridge_tutorials jsk_models jvrc_models hrpsys_choreonoid hrp2_models)
 
 include(FindPkgConfig)
 pkg_check_modules(openhrp3 REQUIRED openhrp3.1)
@@ -20,6 +20,7 @@ catkin_package(
 
 ##
 set (JSK_MODELS_DIR ${jsk_models_SOURCE_PREFIX})
+set (HRP2_MODELS_DIR ${hrp2_models_SOURCE_PREFIX})
 ################################
 ## compile_openhrp_model
 ##  Generate OpenHRP3 .xml and .conf file.
@@ -169,6 +170,11 @@ configure_file(${PROJECT_SOURCE_DIR}/config/JAXON_RED_LOAD_OBJ.cnoid.in ${PROJEC
 #CHIDORI conid
 ###
 configure_file(${PROJECT_SOURCE_DIR}/config/CHIDORI_RH_FLAT.cnoid.in ${PROJECT_SOURCE_DIR}/config/CHIDORI_RH_FLAT.cnoid @ONLY)
+
+###
+#HRP2JSKNT conid
+###
+configure_file(${PROJECT_SOURCE_DIR}/config/HRP2JSKNT_RH_FLAT.cnoid.in ${PROJECT_SOURCE_DIR}/config/HRP2JSKNT_RH_FLAT.cnoid @ONLY)
 
 ###
 # scene.yaml
