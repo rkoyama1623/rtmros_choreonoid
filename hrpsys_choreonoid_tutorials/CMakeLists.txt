@@ -175,6 +175,7 @@ configure_file(${PROJECT_SOURCE_DIR}/config/CHIDORI_RH_FLAT.cnoid.in ${PROJECT_S
 #HRP2JSKNT conid
 ###
 configure_file(${PROJECT_SOURCE_DIR}/config/HRP2JSKNT_RH_FLAT.cnoid.in ${PROJECT_SOURCE_DIR}/config/HRP2JSKNT_RH_FLAT.cnoid @ONLY)
+configure_file(${PROJECT_SOURCE_DIR}/config/HRP2JSKNT_FLAT.cnoid.in ${PROJECT_SOURCE_DIR}/config/HRP2JSKNT_FLAT.cnoid @ONLY)
 
 ###
 # scene.yaml
